@@ -20,7 +20,7 @@ metadata:
   name: argocdserver
   namespace: argocd
   annotations:
-    cert-manager.io/issuer: "portalk8slabs"
+    cert-manager.io/issuer: "4t2labs"
 spec:
   ingressClassName: nginx
   tls:
