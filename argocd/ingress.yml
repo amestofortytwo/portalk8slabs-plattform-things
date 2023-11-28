@@ -1,0 +1,40 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: 4t2labs
+  namespace: argocd
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: noreply@4t2.no
+    privateKeySecretRef:
+      name: portalk8slabs
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocdserver
+  namespace: argocd
+  annotations:
+    cert-manager.io/issuer: "portalk8slabs"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - "argocd.portalk8slabs.4t2.no"
+    secretName: portalk8slabs
+  rules:
+  - host: "argocd.portalk8slabs.4t2.no"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80
